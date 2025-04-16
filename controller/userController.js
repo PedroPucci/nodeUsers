@@ -4,9 +4,8 @@ exports.funcHello = async (req, res) => {
   res.send("Hello World!");
 };
 
-exports.funcGetUsers = userServ.getAllUsers;
+//exports.funcGetUsers = userServ.getAllUsers;
 
-// GET /users - Lista todos os usuários
 exports.funcGetUsers = async (req, res) => {
   try {
     const users = await userServ.getAllUsers();
@@ -16,7 +15,6 @@ exports.funcGetUsers = async (req, res) => {
   }
 };
 
-// GET /users/name/:name - Busca usuários por nome
 exports.funcGetUserByName = async (req, res) => {
   try {
     const name = req.params.name;
@@ -28,7 +26,6 @@ exports.funcGetUserByName = async (req, res) => {
   }
 };
 
-// POST /users - Cria um novo usuário
 exports.funcCreateUser = async (req, res) => {
   try {
     const newUser = await userServ.createUser(req.body);
@@ -38,7 +35,6 @@ exports.funcCreateUser = async (req, res) => {
   }
 };
 
-// PUT /users/:id - Atualiza um usuário existente
 exports.funcUpdateUser = async (req, res) => {
   try {
     const id = req.params.id;
@@ -47,5 +43,18 @@ exports.funcUpdateUser = async (req, res) => {
     res.status(200).json(updatedUser);
   } catch (err) {
     res.status(400).json({ error: err.message });
+  }
+};
+
+exports.funcDeleteUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleted = await userServ.deleteUser(id);
+
+    if (!deleted) return res.status(404).json({ message: "User not found" });
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };

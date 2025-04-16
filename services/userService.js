@@ -46,4 +46,17 @@ exports.updateUser = async (id, userData) => {
   return data[0];
 };
 
+exports.deleteUser = async (id) => {
+  const { data, error } = await cliente.supabase
+    .from("usuario")
+    .delete()
+    .eq("id", id)
+    .select();
+
+  if (error) throw new Error(error.message);
+
+  return data.length > 0;
+};
+
+
 //module.exports = getAllUsers;
